@@ -46,6 +46,12 @@ class plexpy (
   String  $basedir = '/opt/plexpy',
   Boolean $latest  = true,
 )  {
+  $plexpy_deps = ['mono-core', 'mono-data-sqlite', 'mono-extras', 'mono-data']
+  package { $plexpy_deps :
+    ensure => present,
+    before => Vcsrepo[$basedir],
+  }
+
   if $latest {
     vcsrepo { $basedir :
       ensure   => present,
