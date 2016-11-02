@@ -43,14 +43,21 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class plexpy (
-  String  $basedir = '/opt/plexpy',
-  Boolean $latest  = true,
+  String $basedir   = '/opt/plexpy',
+  String $configdir = '/etc/plexpy',
+  String $user      = 'plexpy',
+  Boolean $latest   = true,
 )  {
   # $plexpy_deps = ['mono-core', 'mono-data-sqlite', 'mono-extras', 'mono-data']
   # package { $plexpy_deps :
   # ensure => present,
   # before => Vcsrepo[$basedir],
   # }
+
+  user { $user :
+    ensure     => present,
+    managehome => true,
+  }
 
   if $latest {
     vcsrepo { $basedir :
@@ -68,6 +75,19 @@ class plexpy (
     }
   }
 
+  file { $configdir :
+    ensure => directory,
+    owner  => $user,
+    group  => $user,
+  }
+
+  # file { "${configdir}/plexpy.ini" :
+  # ensure => file,
+  # source => 'puppet:///modules/plexpy/plexpy.ini',
+  # owner  => $user,
+  # group  => $user,
+  # }
+
   file { 'plexpy_systemd' :
     ensure  => present,
     path    => '/usr/lib/systemd/system/plexpy.service',
@@ -81,7 +101,8 @@ class plexpy (
   service { 'plexpy' :
     ensure    => running,
     enable    => true,
-    subscribe => File['plexpy_systemd'],
+    require   => User[$user],
+    subscribe => [ File['plexpy_systemd'], File["${configdir}/plexpy.ini"] ],
   }
 }
 
