@@ -46,11 +46,11 @@ class plexpy (
   String  $basedir = '/opt/plexpy',
   Boolean $latest  = true,
 )  {
-  $plexpy_deps = ['mono-core', 'mono-data-sqlite', 'mono-extras', 'mono-data']
-  package { $plexpy_deps :
-    ensure => present,
-    before => Vcsrepo[$basedir],
-  }
+  # $plexpy_deps = ['mono-core', 'mono-data-sqlite', 'mono-extras', 'mono-data']
+  # package { $plexpy_deps :
+  # ensure => present,
+  # before => Vcsrepo[$basedir],
+  # }
 
   if $latest {
     vcsrepo { $basedir :
@@ -66,6 +66,22 @@ class plexpy (
       provider => git,
       source   => 'git@github.com:JonnyWong16/plexpy.git',
     }
+  }
+
+  file { 'plexpy_systemd' :
+    ensure  => present,
+    path    => '/usr/lib/systemd/system/plexpy.service',
+    source  => 'puppet:///modules/plexpy/plexpy.service',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Vcsrepo[$basedir],
+  }
+
+  service { 'plexpy' :
+    ensure    => running,
+    enable    => true,
+    subscribe => File['plexpy_systemd'],
   }
 }
 
