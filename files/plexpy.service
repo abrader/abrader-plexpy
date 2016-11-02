@@ -1,0 +1,15 @@
+# Managed by Puppet
+
+[Unit]
+Description=PlexPy - Stats for Plex Media Server usage
+
+[Service]
+ExecStart=/opt/plexpy/PlexPy.py --daemon --config /etc/plexpy/plexpy.ini --datadir /opt/plexpy --nolaunch --quiet
+GuessMainPID=no
+Type=forking
+User=plexpy
+Group=plexpy
+
+[Install]
+WantedBy=multi-user.target
+
