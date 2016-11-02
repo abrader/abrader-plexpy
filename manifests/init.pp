@@ -72,7 +72,17 @@ class plexpy (
       ensure   => present,
       provider => git,
       source   => 'git@github.com:JonnyWong16/plexpy.git',
+      owner    => $user,
+      group    => $user,
     }
+  }
+
+  file { $basedir :
+    ensure  => directory,
+    owner   => $user,
+    group   => $user,
+    recurse => true,
+    require => Vcsrepo[$basedir],
   }
 
   file { $configdir :
@@ -101,8 +111,8 @@ class plexpy (
   service { 'plexpy' :
     ensure    => running,
     enable    => true,
-    require   => User[$user],
-    subscribe => [ File['plexpy_systemd'], File["${configdir}/plexpy.ini"] ],
+    require   => [ File[$basedir], User[$user] ],
+    subscribe => [ File['plexpy_systemd'], File[$configdir] ],
   }
 }
 
