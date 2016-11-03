@@ -35,7 +35,7 @@
 # Authors
 # -------
 #
-# Author Name <author@domain.com>
+# Andrew Brader <abrader@gmail.com>
 #
 # Copyright
 # ---------
@@ -48,11 +48,6 @@ class plexpy (
   String $user      = 'plexpy',
   Boolean $latest   = true,
 )  {
-  # $plexpy_deps = ['mono-core', 'mono-data-sqlite', 'mono-extras', 'mono-data']
-  # package { $plexpy_deps :
-  # ensure => present,
-  # before => Vcsrepo[$basedir],
-  # }
 
   user { $user :
     ensure     => present,
@@ -82,6 +77,7 @@ class plexpy (
     owner   => $user,
     group   => $user,
     recurse => true,
+    ignore  => ['.git'],
     require => Vcsrepo[$basedir],
   }
 
@@ -90,13 +86,6 @@ class plexpy (
     owner  => $user,
     group  => $user,
   }
-
-  # file { "${configdir}/plexpy.ini" :
-  # ensure => file,
-  # source => 'puppet:///modules/plexpy/plexpy.ini',
-  # owner  => $user,
-  # group  => $user,
-  # }
 
   file { 'plexpy_systemd' :
     ensure  => present,
@@ -112,7 +101,7 @@ class plexpy (
     ensure    => running,
     enable    => true,
     require   => [ File[$basedir], User[$user] ],
-    subscribe => [ File['plexpy_systemd'], File[$configdir] ],
+    subscribe => [ Vcsrepo[$basedir], File['plexpy_systemd'], File[$configdir] ],
   }
 }
 
