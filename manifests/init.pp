@@ -12,22 +12,23 @@ class plexpy (
     ensure     => present,
     managehome => true,
   }
+  
+  Vcsrepo {
+    owner    => $user,
+    group    => $user,
+    source   => $repo_url,
+    provider => git,
+  }
 
   if $latest {
     vcsrepo { $basedir :
       ensure   => present,
-      provider => git,
-      source   => $repo_url,
       revision => 'master',
     }
   }
   else {
     vcsrepo { $basedir :
       ensure   => present,
-      provider => git,
-      source   => $repo_url,
-      owner    => $user,
-      group    => $user,
     }
   }
 
