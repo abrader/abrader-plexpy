@@ -10,7 +10,6 @@ class plexpy (
 
   user { $user :
     ensure     => present,
-    managehome => true,
   }
   
   Vcsrepo {
