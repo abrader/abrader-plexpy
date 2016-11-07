@@ -94,7 +94,7 @@ class plexpy (
     source  => 'puppet:///modules/plexpy/plexpy.service',
     owner   => 'root',
     group   => 'root',
-    mode    => '0755',
+    mode    => '0644',
     require => Vcsrepo[$basedir],
   }
 
