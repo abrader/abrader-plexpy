@@ -27,7 +27,7 @@ describe 'plexpy' do
       it { is_expected.to contain_file('plexpy_systemd').with_mode('0644') }
 
       it { is_expected.to contain_service('plexpy').with_ensure('running') }
-      it { is_expected.to contain_service('plexpy').with_ensure('true') }
+      it { is_expected.to contain_service('plexpy').with_enable('true') }
     end
   end
 end
