@@ -11,7 +11,7 @@ class plexpy (
   user { $user :
     ensure     => present,
   }
-  
+
   Vcsrepo {
     owner    => $user,
     group    => $user,
@@ -63,4 +63,3 @@ class plexpy (
     subscribe => [ Vcsrepo[$basedir], File['plexpy_systemd'], File[$configdir] ],
   }
 }
-
