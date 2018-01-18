@@ -22,9 +22,9 @@ describe 'plexpy' do
       it { is_expected.to contain_file('/etc/plexpy').with_owner('plexpy') }
       it { is_expected.to contain_file('/etc/plexpy').with_group('plexpy') }
 
-      it { is_expected.to contain_file('/usr/lib/systemd/system/plexpy.service').with_owner('root') }
-      it { is_expected.to contain_file('/usr/lib/systemd/system/plexpy.service').with_group('root') }
-      it { is_expected.to contain_file('/usr/lib/systemd/system/plexpy.service').with_mode('0644') }
+      it { is_expected.to contain_file('plexpy_systemd').with_owner('root') }
+      it { is_expected.to contain_file('plexpy_systemd').with_group('root') }
+      it { is_expected.to contain_file('plexpy_systemd').with_mode('0644') }
 
       it { is_expected.to contain_service('plexpy').with_ensure('running') }
       it { is_expected.to contain_service('plexpy').with_ensure('true') }
