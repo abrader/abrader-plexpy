@@ -1,0 +1,14 @@
+{
+  "name": "abrader-plexpy",
+  "version": "0.1.0",
+  "author": "Andrew Brader",
+  "summary": "Installs and configures PlexPy software",
+  "license": "Apache-2.0",
+  "source": "https://github.com/abrader/abrader-plexpy.git",
+  "project_page": "https://github.com/abrader/abrader-plexpy",
+  "issues_url": "https://github.com/abrader/abrader-plexpy/issues",
+  "dependencies": [
+    {"name":"puppetlabs-vcsrepo","version_requirement":">= 2.0.0"}
+  ]
+}
+
